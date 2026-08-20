@@ -1,18 +1,18 @@
 <?php
 function logActivity($pdo, $user_id, $email, $action, $status='success' ){
     try{
-        // get client IP address
+//Get the IP address of client
         $ip = $_SERVER['HTTP_x_FORWRARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN'; 
 
-        //string to array
+//string to array
         if (strpos($ip, ',') !== false) {
             $ip =trim (explode(',' , $ip)[0]);  
         }
 
-        //get user agemt (browser)
+//Get user agent
         $user_agent = substr($_SERVER['HTTP_USER_AGENT']?? 'Unknown',0,255);
 
-        // APPLICATION query #1
+// Applicaiton query #1
         $stmt = $pdo->prepare("
         INSERT INTO activity_logs(
             user_id,
@@ -24,7 +24,17 @@ function logActivity($pdo, $user_id, $email, $action, $status='success' ){
             )VALUES (?,?,?,?,?,?)
         ");
 
+ //Execute the insert
+        $success = $stmt->execute([
+            $user_id,
+            $user_email,
+            $action,
+            $status,
+            $ip,
+            $user_agent
+        ]);
 
+        return $success;
     }catch(PDOException $e){
         error_log("Activity Log Error: " . $e->getMessage());
         return false;
