@@ -10,8 +10,8 @@ define('DB_NAME', 'it34a_lab_db');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
-$user_id = "root";
-$user_email = "root";
+$user_id = "root" ?? null;
+$user_email = "root" ?? null;
 
 try {
     $pdo = new PDO(
@@ -29,11 +29,6 @@ try {
         'success'
     );
 
-    if ($success) {
-        echo "Activity log inserted successfully";
-    } else {
-        echo "Failed to insert activity log";
-    }
 
 } catch (PDOException $e) {
     die("Connection Failed: " . $e->getMessage());
