@@ -7,8 +7,7 @@ function redirect($path){
 
 
 
-function loginUser ($pdo,$login,$password){
-
+function loginUser($pdo,$login,$password){
 
 
 // Application query #2
@@ -60,7 +59,7 @@ function requireRole($role){
     requireLogin();
 
 
-    if($_SESSIONO['user_role' !== $role]){
+    if($_SESSION['user_role'] !== $role){
         http_response_code(403);
         die('Access Denied');
     }
