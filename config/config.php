@@ -14,8 +14,6 @@ define('DB_NAME', 'it34a_lab_db');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
-$user_id = "root" ?? null;
-$user_email = "root" ?? null;
 
 try {
     $pdo = new PDO(
@@ -25,13 +23,6 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 
-    $success = logActivity(
-        $pdo,
-        $user_id,
-        $user_email,
-        'db_connect',
-        'success'
-    );
 
 
 } catch (PDOException $e) {
