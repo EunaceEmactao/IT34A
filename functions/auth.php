@@ -1,18 +1,9 @@
 <?php
 
-function redirect($path){
-    header("Location: " . BASE_URL . $path);
-    exit;
-}
-
-
-
 function loginUser($pdo,$login,$password){
+    // Application query #2
 
-
-// Application query #2
-
-$sql = "
+    $sql = "
     SELECT
         user_id,
         user_email,
@@ -23,28 +14,33 @@ $sql = "
     WHERE user_email = :login
         OR user_username = :login
     LIMIT 1
-";
+    ";
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([':login'=>$login]);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':login'=>$login]);
 
-$user = $stmt->fetch();
+    $user = $stmt->fetch();
 
-if(!$user){
+    if(!$user){
     return false;
-}
-if(!password_verify($password, $user['user_password'])){
+    }
+    if(!password_verify($password, $user['user_password'])){
     return false; 
-}
+    }
 
-// Session variables
+    // Session variables
 
     $_SESSION['user_id']=$user['user_id'];
     $_SESSION['user_email']=$user['user_email'];
     $_SESSION['user_username']=$user['user_username'];
     $_SESSION['user_role']=$user['user_role'];
 
-    return true;
+
+  //initialize session in database
+
+$_SESSION['session_id'] = startUserSession($pdo);
+return true;
+  
 }
 
 
