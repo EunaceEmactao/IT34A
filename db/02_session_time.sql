@@ -1,3 +1,5 @@
+
+-- session sql 
 CREATE TABLE user_sessions(
     session_id INT AUTO_INCREMENT PRIMARY KEY,
 
