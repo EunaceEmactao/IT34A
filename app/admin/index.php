@@ -1,11 +1,11 @@
 
 <?php 
 require_once '../../config/config.php';
-
+require_once '../../functions/csv.php';
 
 requireRole('admin');
 
-$section = $_GET['section'] ?? 'activity_logs';
+$section = $_GET['section'] ?? 'activity-logs';
 $action = $_GET['action'] ?? '';
 
 
@@ -34,9 +34,9 @@ if($action == 'export'){
             activity_log_user_agent,
             activity_log_created_at
         FROM activity_logs
-        ORDER BY activity_log_created_at
+        ORDER BY activity_log_created_at DESC
         ");
-        $rows = $stmt->fetchAll(PDO:FETCH_ASSOC);
+        $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         logActivity(
             $pdo,
@@ -52,7 +52,7 @@ if($action == 'export'){
                 'Record ID', 'User ID', 'User Email', 'Action', 'Status', 'IP Address', 'User Agent', 'Date & Time',
 
             ],
-            $rows
+            $activities
         
         );
         
@@ -80,8 +80,8 @@ if($action == 'export'){
         <a href="index.php?section=activity-logs&amp;action=export">Export CSV</a>
     </h4>
 
-    <table id="example" class="table table-striped" style="width:auto">
-        <thead>
+    <table border="1">   
+    <thead>
         <tr>
             <th>ID</th>
             <th>User ID </th>
@@ -92,52 +92,52 @@ if($action == 'export'){
             <th>User Agent</th>
             <th>Timestamp</th>
         </tr>
-</thead>
-<tbody>
-    <?php foreach($activities as $activity): ?>
-        <tr> 
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_id']) ?>
-</td>
+        </thead>
+        <tbody>
+            <?php foreach($activities as $activity): ?>
+                <tr> 
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_id']) ?>
+                    </td>
 
-<td> 
-    <?= htmlspecialchars(
-        $activity['user_id']) ?>
-</td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['user_id']) ?>
+                    </td>
 
-<td> 
-    <?= htmlspecialchars(
-        $activity['user_email']) ?>
-</td>
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_action']) ?>
-</td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['user_email']) ?>
+                    </td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_action']) ?>
+                    </td>
 
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_status']) ?>
-</td>
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_ip_address']) ?>
-</td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_status']) ?>
+                    </td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_ip_address']) ?>
+                    </td>
 
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_user_agent']) ?>
-</td>
-<td> 
-    <?= htmlspecialchars(
-        $activity['activity_log_created_at']) ?>
-</td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_user_agent']) ?>
+                    </td>
+                    <td> 
+                        <?= htmlspecialchars(
+                            $activity['activity_log_created_at']) ?>
+                    </td>
 
 
-        </tr>
-        <?php endforeach; ?>
-</tbody>
-</table>
-<?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
 </body>
 </html>
