@@ -91,7 +91,7 @@ function checkSessionTimeout(){
     //10s for testing 
     //1800s for 30 min session time 
 
-    $timeout = 10;
+    $timeout = 10000;
 
     //Check last activity 
 
